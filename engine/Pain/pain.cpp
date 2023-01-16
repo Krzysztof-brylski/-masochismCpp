@@ -59,13 +59,18 @@ private:
             this->commandRangeStack.erase(commandRangeStack.begin());
         }
     }
+    int extractParameters(string name){
+        int first=name.find("(");
+        return int(name[first+1]-'0');
+    }
     void executeCommandBlockStack(){
         int size=this->commandStack.size();
         PainFunctions func;
         for(int i=0;i<size;i++){
             commandBlock commandBlock=this->commandStack.top();
-            func.painFor(this->fileLines,2,commandBlock);
             string name=commandBlock.commandName;
+            cout<<this->extractParameters(name)<<endl;
+            func.painFor(this->fileLines,this->extractParameters(name),commandBlock);
             cout<<"commandBlock:"<<name<<" range:"<<commandBlock.start<<" / "
             <<commandBlock.end<<" content-range:"<<commandBlock.contentStart<<" / "<<commandBlock.contentEnd<<endl;
             commandStack.pop();
@@ -74,10 +79,8 @@ private:
 
     }
     void cleanUp(){
-        //cout<<this->fileLines.size()<<endl;
         for(int i=0;i<this->fileLines.size();i++){
             int find=this->fileLines[i].find("@");
-            cout<<i<<". "<<this->fileLines[i]<<"===>"<<(find != string::npos)<<endl;
             if(find != string::npos){
                 this->fileLines.erase((this->fileLines.begin()+i));
             }
@@ -94,7 +97,6 @@ public:
         this->executeCommandBlockStack();
         this->cleanUp();
         cout<<"____________________"<<endl;
-        //cout<<this->fileLines.size()<<endl;
         for(int i=0;i<this->fileLines.size();i++){
             cout<<i<<". "<<this->fileLines[i]<<endl;
         }
