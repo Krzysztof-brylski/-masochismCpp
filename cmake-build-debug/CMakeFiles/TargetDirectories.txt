@@ -1,0 +1,3 @@
+H:/webdev/masochism/cmake-build-debug/CMakeFiles/masochism.dir
+H:/webdev/masochism/cmake-build-debug/CMakeFiles/edit_cache.dir
+H:/webdev/masochism/cmake-build-debug/CMakeFiles/rebuild_cache.dir
