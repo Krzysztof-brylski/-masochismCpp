@@ -17,7 +17,9 @@ public:
             fileLines.insert((fileLines.begin()+commandBlock.contentEnd+1),content.begin(),content.end());
             this->addedRowsCounter+=(contentRangeLen*content.size());
         }
-    }
+      }
+      void painIf(vector <string> &fileLines,int n, commandBlock &commandBlock){
 
+      }
 
 };
