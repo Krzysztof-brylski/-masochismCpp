@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <string.h>
+#include "Router.h"
 struct request{
     string  methode="";
     string route="";
@@ -19,15 +21,15 @@ namespace MasochismServer{
         WSADATA wsaData;
         sockaddr_in service;
         SOCKET mainSocket,acceptSocket;
-        char* sendBuffer;
-        char* receiveBuffer;
-        int lastError;
+        char* sendBuffer=new char[4096];
+        char* receiveBuffer=new char[4096];
+        int lastError=0;
         request* request = new struct request;
-
+        Router* router;
         int processRequest();
-        int sendResponse();
+        //int sendResponse();
     public:
-        Server(char* serverIp,int serverPort);
+        Server(char* serverIp,int serverPort,  Router* router);
         int runServer();
     };
 }
