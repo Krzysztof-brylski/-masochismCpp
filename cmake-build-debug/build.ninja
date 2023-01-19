@@ -65,6 +65,7 @@ build CMakeFiles/masochism.dir/main.cpp.obj: CXX_COMPILER__masochism_Debug H$:/w
 
 build masochism.exe: CXX_EXECUTABLE_LINKER__masochism_Debug CMakeFiles/masochism.dir/main.cpp.obj
   FLAGS = -g
+  LINK_FLAGS = -static
   LINK_LIBRARIES = -lws2_32  -lwsock32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\masochism.dir
   POST_BUILD = cd .

@@ -7,7 +7,10 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string.h>
-#include "Router.h"
+#include "Router.cpp"
+#include "Response.cpp"
+#pragma once
+#include "../../web/routers.cpp"
 struct request{
     string  methode="";
     string route="";
@@ -30,6 +33,7 @@ namespace MasochismServer{
         //int sendResponse();
     public:
         Server(char* serverIp,int serverPort,  Router* router);
+        ~Server();
         int runServer();
     };
 }

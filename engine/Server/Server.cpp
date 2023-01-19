@@ -23,8 +23,15 @@ MasochismServer::Server::Server(char* serverIp, int serverPort,Router* router){
     this->service.sin_addr.s_addr = inet_addr( serverIp );
     this->service.sin_port = htons( serverPort );
     this->router=router;
+    routers();
 }
-
+MasochismServer::Server::~Server(){
+    delete[] this->sendBuffer;
+    delete[] this->receiveBuffer;
+    delete this->router;
+    delete router;
+    delete this->request;
+}
 int MasochismServer::Server::processRequest() {
 
     int bytesReceive = recv( this->acceptSocket, this->receiveBuffer, 4096, 0 );
@@ -74,18 +81,10 @@ int MasochismServer::Server::runServer() {
         int bytesReceive, bytesSent;
         this->acceptSocket = accept( this->mainSocket, NULL, NULL );
         bytesReceive=this->processRequest();
-        string file=this->router->executeRoute(this->request->route);
-        char http_header[4096] = "HTTP/1.1 200 OK\r\n";
-        strcat(http_header, "Content-type: text/html\r\n");
-        strcat(http_header, "Content-Length: 4096\r\n");
-        strcat(http_header, "Connection: Close\r\n");
-        strcat(http_header, "\r\n");
-        strcat(http_header, file.c_str());
-        send(this->acceptSocket, http_header, sizeof(http_header), 0);
-
-        //bytesRecv = recv( this->acceptSocket, this->receiveBuffer, 32, 0 );
-        //
-
+        responseContainer responseContainer = this->router->findRoute(this->request->route);
+        send(this->acceptSocket, responseContainer.content, responseContainer.size, 0);
+        closesocket(this->acceptSocket);
+       // delete responseContainer;
     }
 
 }
