@@ -18,7 +18,7 @@ private:
 public:
 
     static string view(string path,string code);
-    static responseContainer staticHtml(string path,string code="200");
+    static responseContainer* staticHtml(string path,string code="200");
     static string json();
 };
 
