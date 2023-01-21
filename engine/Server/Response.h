@@ -6,6 +6,7 @@
 #define MASOCHISM_RESPONSE_H
 #include <iostream>
 #include <fstream>
+#include "../Pain/pain.cpp"
 #pragma once
 using namespace std;
 struct responseContainer{
@@ -17,7 +18,7 @@ private:
     static string readFile(string path);
 public:
 
-    static string view(string path,string code);
+    static responseContainer* view(string path,string code);
     static responseContainer* staticHtml(string path,string code="200");
     static string json();
 };

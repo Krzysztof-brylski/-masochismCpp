@@ -85,12 +85,12 @@ int MasochismServer::Server::runServer() {
             responseContainer* responseContainer = router->findRoute(route);
             send(socket, responseContainer->content, responseContainer->size, 0);
             closesocket(socket);
+
             delete[] responseContainer->content;
             delete responseContainer;
         };
         thread thread_object(func, this->acceptSocket,this->request->route,this->router);
         thread_object.join();
-       // delete responseContainer;
     }
 
 }

@@ -86,20 +86,34 @@ private:
             }
         }
     }
+    string implode(){
+        string result;
+        for(int i=0;i<this->fileLines.size();i++){
+            result+=(this->fileLines[i]+"\r\n");
+        }
+
+        return result;
+    }
 public:
 
     Pain(string path){
         this->file.open(path);
     }
-    void run(){
+    ~Pain(){
+        this->fileLines.clear();
+        this->commandRangeStack.clear();
+    }
+    string run(){
         this->runFileAnalysis();
         this->processCommandRangeStack();
         this->executeCommandBlockStack();
         this->cleanUp();
-        cout<<"____________________"<<endl;
-        for(int i=0;i<this->fileLines.size();i++){
-            cout<<i<<". "<<this->fileLines[i]<<endl;
-        }
+
+//        cout<<"____________________"<<endl;
+//        for(int i=0;i<this->fileLines.size();i++){
+//            cout<<i<<". "<<this->fileLines[i]<<endl;
+//        }
+        return this->implode();
     }
 
 };

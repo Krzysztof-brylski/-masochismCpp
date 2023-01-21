@@ -12,6 +12,6 @@ public:
         return Response::staticHtml("aboutUs.html","200");
     }
     static responseContainer* test(){
-        return Response::staticHtml("test.html","200");
+        return Response::view("test.pain.html","200");
     }
 };

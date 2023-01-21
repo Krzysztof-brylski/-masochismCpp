@@ -38,3 +38,25 @@ responseContainer* Response::staticHtml(string path, string code) {
     responseContainer->size = size;
     return responseContainer;
 }
+responseContainer* Response::view(string path,string code){
+
+    responseContainer* responseContainer = new struct responseContainer;
+
+    Pain pain(path);
+    string html = pain.run();
+    cout<<html.length()<<endl;
+    int size=html.length()+85;
+    char* http_header= new char[size];
+    string len="Content-Length: "+to_string(size)+"\r\n";
+    memset(http_header,0,size);
+    strcat(http_header, "HTTP/1.1 200 OK\r\n");
+    strcat(http_header, "Content-type: text/html\r\n");
+    strcat(http_header, len.c_str());
+    strcat(http_header, "Connection: lose\r\n");
+    strcat(http_header, "\r\n");
+    strcat(http_header, html.c_str());
+
+    responseContainer->content = http_header;
+    responseContainer->size = size;
+    return responseContainer;
+}
