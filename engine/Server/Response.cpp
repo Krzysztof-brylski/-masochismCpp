@@ -16,9 +16,9 @@ string Response::readFile(string path) {
     return file;
 }
 
-responseContainer Response::staticHtml(string path, string code) {
+responseContainer* Response::staticHtml(string path, string code) {
 
-    responseContainer responseContainer;
+    responseContainer* responseContainer = new struct responseContainer;
 
 
     string html = Response::readFile(path);
@@ -34,8 +34,7 @@ responseContainer Response::staticHtml(string path, string code) {
     strcat(http_header, "\r\n");
     strcat(http_header, html.c_str());
 
-    responseContainer.content =http_header;
-    responseContainer.size=size;
-
+    responseContainer->content = http_header;
+    responseContainer->size = size;
     return responseContainer;
 }

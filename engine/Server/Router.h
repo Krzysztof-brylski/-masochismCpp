@@ -13,14 +13,14 @@
 using namespace std;
 class Router {
 private:
-    map <string, function<responseContainer()>> GetRoute;
+    map <string, function<responseContainer*()>> GetRoute;
 
     //map <string,string> GetRoute;
 public:
     map <string,string>  getRoutes();
-    responseContainer findRoute(string route);
+    responseContainer* findRoute(string route);
     string executeRoute(string route);
-    void Get(string route, function<responseContainer()> callback);
+    void Get(string route, function<responseContainer*()> callback);
     ~Router();
 };
 

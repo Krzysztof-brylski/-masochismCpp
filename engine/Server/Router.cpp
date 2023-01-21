@@ -4,13 +4,13 @@
 #pragma once
 #include "Router.h"
 
-void Router::Get(std::string route, function<responseContainer()> callback) {
+void Router::Get(std::string route, function<responseContainer*()> callback) {
     this->GetRoute.insert({route, bind(callback)});
 }
-responseContainer Router::findRoute(string route) {
+responseContainer* Router::findRoute(string route) {
     auto  result=this->GetRoute.find(route);
 
-    return  result->second();
+    return result->second();
 }
 string Router::executeRoute(string route) {
 //    auto  result=this->GetRoute.find(route);

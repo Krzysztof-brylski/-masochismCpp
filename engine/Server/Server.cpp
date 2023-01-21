@@ -78,12 +78,18 @@ int MasochismServer::Server::runServer() {
 
     while(true)
     {
-        int bytesReceive, bytesSent;
         this->acceptSocket = accept( this->mainSocket, NULL, NULL );
-        bytesReceive=this->processRequest();
-        responseContainer responseContainer = this->router->findRoute(this->request->route);
-        send(this->acceptSocket, responseContainer.content, responseContainer.size, 0);
-        closesocket(this->acceptSocket);
+        this->processRequest();
+        auto func=[](int socket,string route, Router* router){
+
+            responseContainer* responseContainer = router->findRoute(route);
+            send(socket, responseContainer->content, responseContainer->size, 0);
+            closesocket(socket);
+            delete[] responseContainer->content;
+            delete responseContainer;
+        };
+        thread thread_object(func, this->acceptSocket,this->request->route,this->router);
+        thread_object.join();
        // delete responseContainer;
     }
 
