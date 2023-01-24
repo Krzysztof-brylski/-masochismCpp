@@ -59,7 +59,12 @@ int MasochismServer::Server::processRequest() {
     cout<<this->request->protocol<<endl;
     return 0;
 }
-
+methodeAndRoute MasochismServer::Server::requestToMethodeAndRoute() {
+    methodeAndRoute methodeAndRoute;
+    methodeAndRoute.route= this->request->route;
+    methodeAndRoute.methode= this->request->methode;
+    return methodeAndRoute;
+}
 int MasochismServer::Server::runServer() {
     if(this->lastError != 0){
         return 1;
@@ -80,15 +85,15 @@ int MasochismServer::Server::runServer() {
     {
         this->acceptSocket = accept( this->mainSocket, NULL, NULL );
         this->processRequest();
-        auto func=[](int socket,string route, Router* router){
+        auto func=[](int socket,methodeAndRoute methodeAndRoute, Router* router){
 
-            responseContainer* responseContainer = router->findRoute(route);
+            responseContainer* responseContainer = router->findRoute(methodeAndRoute);
             send(socket, responseContainer->content, responseContainer->size, 0);
             closesocket(socket);
             delete[] responseContainer->content;
             delete responseContainer;
         };
-        thread thread_object(func, this->acceptSocket,this->request->route,this->router);
+        thread thread_object(func, this->acceptSocket,this->requestToMethodeAndRoute(),this->router);
         thread_object.join();
        // delete responseContainer;
     }

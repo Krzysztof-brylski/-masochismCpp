@@ -31,6 +31,7 @@ namespace MasochismServer{
         request* request = new struct request;
         Router* router;
         int processRequest();
+        methodeAndRoute requestToMethodeAndRoute();
         //int sendResponse();
     public:
         Server(char* serverIp,int serverPort,  Router* router);

@@ -9,17 +9,23 @@
 #include <functional>
 #include <fstream>
 #include "Response.h"
+#include "httpErrors.cpp"
 #pragma once
 using namespace std;
+struct methodeAndRoute{
+    string methode;
+    string route;
+};
+
 class Router {
 private:
-    map <string, function<responseContainer*()>> GetRoute;
+    map <pair<string,string>, function<responseContainer*()>> Route;
 
     //map <string,string> GetRoute;
 public:
-    map <string,string>  getRoutes();
-    responseContainer* findRoute(string route);
-    string executeRoute(string route);
+
+    responseContainer* findRoute(methodeAndRoute methodeAndRoute);
+
     void Get(string route, function<responseContainer*()> callback);
     ~Router();
 };

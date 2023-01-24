@@ -4,28 +4,18 @@
 #pragma once
 #include "Router.h"
 
-void Router::Get(std::string route, function<responseContainer*()> callback) {
-    this->GetRoute.insert({route, bind(callback)});
+void Router::Get(string route, function<responseContainer*()> callback) {
+    this->Route.insert({make_pair("GET",route), bind(callback)});
 }
-responseContainer* Router::findRoute(string route) {
-    auto  result=this->GetRoute.find(route);
-
-    return result->second();
-}
-string Router::executeRoute(string route) {
-//    auto  result=this->GetRoute.find(route);
-//    string line="",file="";
-//    fstream fstream1;
-//    fstream1.open("../resources/html/"+result->second);
-//    while( getline(fstream1,line)){
-//        file+=(line+"\n");
-//    }
-//    fstream1.close();
-//    cout<<file<<endl;
-//    return file;
+responseContainer* Router::findRoute(methodeAndRoute methodeAndRoute) {
+    auto  result=this->Route.find(make_pair(methodeAndRoute.methode,methodeAndRoute.route));
+    if(result != this->Route.end()){
+        return result->second();
+    }
+    return abort(404);
 }
 Router::~Router() {
-    this->GetRoute.clear();
+    this->Route.clear();
 }
 Router *router = new Router();
 
