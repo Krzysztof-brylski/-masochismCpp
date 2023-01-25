@@ -6,6 +6,7 @@ void routers(){
     router->Get("/",&TestController::index);
     router->Get("/about",&TestController::about);
     router->Get("/test",&TestController::test);
+    router->Post("/post",&TestController::test);
 }
 
 

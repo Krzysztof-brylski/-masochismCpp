@@ -5,12 +5,21 @@
 #include "Router.h"
 
 void Router::Get(string route, function<responseContainer*()> callback) {
-    this->Route.insert({make_pair("GET",route), bind(callback)});
+    this->Route[route].insert({"GET",bind(callback)});
+    //this->Route.insert({route,this->Route.insert[route].insert()}});
+}
+void Router::Post(string route, function<responseContainer*()> callback) {
+    this->Route[route].insert({"POST",bind(callback)});
+    //this->Route.insert({route,this->Route.insert[route].insert()}});
 }
 responseContainer* Router::findRoute(methodeAndRoute methodeAndRoute) {
-    auto  result=this->Route.find(make_pair(methodeAndRoute.methode,methodeAndRoute.route));
+    auto  result=this->Route.find(methodeAndRoute.route);
     if(result != this->Route.end()){
-        return result->second();
+        auto  result=this->Route[methodeAndRoute.route].find(methodeAndRoute.methode);
+        if(result != this->Route[methodeAndRoute.route].end()){
+            return result->second();
+        }
+        return abort(415);
     }
     return abort(404);
 }

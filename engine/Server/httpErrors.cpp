@@ -10,13 +10,16 @@
 responseContainer* error404(){
     return Response::staticHtml("httpError/404.html");
 }
-
+responseContainer* error415(){
+    return Response::staticHtml("httpError/415.html");
+}
 map <int, function<responseContainer*()>> configMap;
 void config(){
     //default error
     configMap.insert({000, bind(error404)});
     //
     configMap.insert({404, bind(error404)});
+    configMap.insert({415, bind(error415)});
 }
 
 responseContainer* abort(int errorCode){

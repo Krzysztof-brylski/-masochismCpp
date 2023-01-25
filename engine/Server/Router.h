@@ -19,7 +19,7 @@ struct methodeAndRoute{
 
 class Router {
 private:
-    map <pair<string,string>, function<responseContainer*()>> Route;
+    map <string, map <string,function<responseContainer*()>>> Route;
 
     //map <string,string> GetRoute;
 public:
@@ -27,6 +27,7 @@ public:
     responseContainer* findRoute(methodeAndRoute methodeAndRoute);
 
     void Get(string route, function<responseContainer*()> callback);
+    void Post(string route, function<responseContainer*()> callback);
     ~Router();
 };
 
