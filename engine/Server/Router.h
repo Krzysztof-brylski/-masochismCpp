@@ -12,6 +12,7 @@
 #include "httpErrors.cpp"
 #pragma once
 using namespace std;
+using namespace std::placeholders;
 struct methodeAndRoute{
     string methode;
     string route;
@@ -19,15 +20,15 @@ struct methodeAndRoute{
 
 class Router {
 private:
-    map <string, map <string,function<responseContainer*()>>> Route;
+    map <string, map <string,function<responseContainer*(map<string,string> params)>>> Route;
 
     //map <string,string> GetRoute;
 public:
 
-    responseContainer* findRoute(methodeAndRoute methodeAndRoute);
+    responseContainer* findRoute(methodeAndRoute methodeAndRoute, map<string,string> params);
 
-    void Get(string route, function<responseContainer*()> callback);
-    void Post(string route, function<responseContainer*()> callback);
+    void Get(string route, function<responseContainer*(map<string,string> params)> callback);
+    void Post(string route, function<responseContainer*(map<string,string> params)> callback);
     ~Router();
 };
 

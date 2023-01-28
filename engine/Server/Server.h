@@ -32,6 +32,7 @@ namespace MasochismServer{
         Router* router;
         int processRequest();
         methodeAndRoute requestToMethodeAndRoute();
+        map<string,string> decodeUrl(string url);
         //int sendResponse();
     public:
         Server(char* serverIp,int serverPort,  Router* router);
