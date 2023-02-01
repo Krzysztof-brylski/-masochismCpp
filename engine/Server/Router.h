@@ -10,25 +10,21 @@
 #include <fstream>
 #include "Response.h"
 #include "httpErrors.cpp"
+#include "serverDataStructures.h"
 #pragma once
 using namespace std;
 using namespace std::placeholders;
-struct methodeAndRoute{
-    string methode;
-    string route;
-};
-
 class Router {
 private:
-    map <string, map <string,function<responseContainer*(map<string,string> params)>>> Route;
+    map <string, map <string,function<responseContainer*(request*)> > > Route;
 
     //map <string,string> GetRoute;
 public:
 
-    responseContainer* findRoute(methodeAndRoute methodeAndRoute, map<string,string> params);
+    responseContainer* findRoute(request* Request);
 
-    void Get(string route, function<responseContainer*(map<string,string> params)> callback);
-    void Post(string route, function<responseContainer*(map<string,string> params)> callback);
+    void Get(string route, function<responseContainer*(request*)> callback);
+    void Post(string route, function<responseContainer*(request*)> callback);
     ~Router();
 };
 

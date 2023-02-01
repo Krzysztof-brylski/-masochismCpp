@@ -3,19 +3,21 @@
 //
 #pragma once
 #include "Router.h"
+#include "Server.h"
+
 using namespace std::placeholders;
-void Router::Get(string route, function<responseContainer*(map<string,string> params)> callback) {
+void Router::Get(string route, function<responseContainer*(request*)> callback) {
     this->Route[route].insert({"GET",bind(callback, _1)});
 }
-void Router::Post(string route, function<responseContainer*(map<string,string> params)> callback) {
+void Router::Post(string route, function<responseContainer*(request*)> callback) {
     this->Route[route].insert({"POST",bind(callback, _1)});
 }
-responseContainer* Router::findRoute(methodeAndRoute methodeAndRoute, map<string,string> params) {
-    auto  result=this->Route.find(methodeAndRoute.route);
+responseContainer* Router::findRoute(request* Request) {
+    auto  result=this->Route.find( Request->route);
     if(result != this->Route.end()){
-        auto  result=this->Route[methodeAndRoute.route].find(methodeAndRoute.methode);
-        if(result != this->Route[methodeAndRoute.route].end()){
-            return result->second(params);
+        auto  result=this->Route[Request->route].find(Request->methode);
+        if(result != this->Route[Request->route].end()){
+            return result->second(Request);
         }
         return abort(415);
     }

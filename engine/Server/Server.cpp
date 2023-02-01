@@ -32,40 +32,6 @@ MasochismServer::Server::~Server(){
     delete router;
     delete this->request;
 }
-//todo decode url
-int MasochismServer::Server::processRequest() {
-
-    int bytesReceive = recv( this->acceptSocket, this->receiveBuffer, 4096, 0 );
-    char* requestHeader=strtok(this->receiveBuffer, "\n");
-    char* requestParameters=strtok(requestHeader," ");
-    int counter=0;
-
-    while(requestParameters != nullptr){
-        switch(counter){
-            case 0:
-                this->request->methode=requestParameters;
-                break;
-            case 1:
-                this->request->route=requestParameters;
-                break;
-            case 2:
-                this->request->protocol=requestParameters;
-                break;
-        }
-        requestParameters=strtok(nullptr," ");
-        counter++;
-    }
-//    cout<<this->request->methode<<endl;
-//    cout<<this->request->route<<endl;
-//    cout<<this->request->protocol<<endl;
-    return 0;
-}
-methodeAndRoute MasochismServer::Server::requestToMethodeAndRoute() {
-    methodeAndRoute methodeAndRoute;
-    methodeAndRoute.route= this->request->route;
-    methodeAndRoute.methode= this->request->methode;
-    return methodeAndRoute;
-}
 map<string,string> MasochismServer::Server::decodeUrl(string url){
     map <string,string> parameters;
     int pos=url.find("?");
@@ -88,6 +54,38 @@ map<string,string> MasochismServer::Server::decodeUrl(string url){
     return parameters;
 }
 
+int MasochismServer::Server::processRequest() {
+
+    int bytesReceive = recv( this->acceptSocket, this->receiveBuffer, 4096, 0 );
+    char* requestHeader=strtok(this->receiveBuffer, "\n");
+    char* requestParameters=strtok(requestHeader," ");
+    int counter=0;
+
+    while(requestParameters != nullptr){
+        switch(counter){
+            case 0:
+                this->request->methode=requestParameters;
+                break;
+            case 1:
+                this->request->route=requestParameters;
+                break;
+            case 2:
+                this->request->protocol=requestParameters;
+                break;
+        }
+        requestParameters=strtok(nullptr," ");
+        counter++;
+    }
+    this->request->Get = this->decodeUrl(this->request->route);
+    this->request->Post ={};
+//    cout<<this->request->methode<<endl;
+//    cout<<this->request->route<<endl;
+//    cout<<this->request->protocol<<endl;
+    return 0;
+}
+
+
+
 
 int MasochismServer::Server::runServer() {
     if(this->lastError != 0){
@@ -109,15 +107,15 @@ int MasochismServer::Server::runServer() {
     {
         this->acceptSocket = accept( this->mainSocket, NULL, NULL );
         this->processRequest();
-        auto func=[](int socket,methodeAndRoute methodeAndRoute, Router* router, map <string, string> params){
+        auto func=[](int socket,struct request* Request, Router* router){
 
-            responseContainer* responseContainer = router->findRoute(methodeAndRoute, params);
+            responseContainer* responseContainer = router->findRoute(Request);
             send(socket, responseContainer->content, responseContainer->size, 0);
             closesocket(socket);
             delete[] responseContainer->content;
             delete responseContainer;
         };
-        thread thread_object(func, this->acceptSocket,this->requestToMethodeAndRoute(),this->router,this->decodeUrl(this->request->route));
+        thread thread_object(func, this->acceptSocket,this->request,this->router);
         thread_object.join();
         //delete responseContainer;
     }

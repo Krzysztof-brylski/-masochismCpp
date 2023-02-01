@@ -1,6 +1,7 @@
 #include "dataStructures.h"
 #include <string.h>
 #include <vector>
+#include <map>
 #include <iostream>
 using namespace std;
 class PainFunctions{
@@ -20,6 +21,12 @@ public:
       }
       void painIf(vector <string> &fileLines,int n, commandBlock &commandBlock){
 
+      }
+      void painInsert(vector <string> &fileLines,string data, commandBlock &commandBlock){
+          cout<<data<<endl;
+          int contentRangeLen=commandBlock.end-commandBlock.start;
+          fileLines.reserve(fileLines.size()+(2*contentRangeLen));
+          fileLines.insert((fileLines.begin()+commandBlock.start),data);
       }
 
 };

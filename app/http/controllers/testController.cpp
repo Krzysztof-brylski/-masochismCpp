@@ -3,16 +3,21 @@
 //
 #pragma once
 #include "../../../engine/Server/Response.h"
+#include "../../../engine/Server/Server.h"
+
+
 class TestController{
 public:
-    static responseContainer* index(map<string,string> params){
-        cout<<params["test1"]<<endl;
+    static responseContainer* index(struct request* Request){
+        if(Request->Get["test"]=="test"){
+            return  Response::staticHtml("test.html","200");
+        }
         return  Response::staticHtml("index.html","200");
     }
-    static responseContainer* about(map<string,string> params){
+    static responseContainer* about(struct request* Request){
         return Response::staticHtml("aboutUs.html","200");
     }
-    static responseContainer* test(map<string,string> params){
-        return Response::staticHtml("test.html","200");
+    static responseContainer* test(struct request* Request){
+        return Response::staticHtml("aboutUs.html","200");
     }
 };

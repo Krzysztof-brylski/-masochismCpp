@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <map>
 #include <stack>
 #include "Assets/PainFunctions.cpp"
 #include <string.h>
@@ -13,6 +14,7 @@ protected:
     vector <string> fileLines;
     vector <commandRange> commandRangeStack;
     stack <commandBlock> commandStack;
+    map <string,string> data;
 private:
     void detectCommand(string line,int lineNo){
         commandRange range;
@@ -59,9 +61,10 @@ private:
             this->commandRangeStack.erase(commandRangeStack.begin());
         }
     }
-    int extractParameters(string name){
+    string extractParameters(string name){
         int first=name.find("(");
-        return int(name[first+1]-'0');
+        int last=name.find(")");
+        return name.substr(first+1,last);
     }
     void executeCommandBlockStack(){
         int size=this->commandStack.size();
@@ -69,8 +72,12 @@ private:
         for(int i=0;i<size;i++){
             commandBlock commandBlock=this->commandStack.top();
             string name=commandBlock.commandName;
+//            if(name=="for"){
+//                //func.painFor(this->fileLines,this->extractParameters(name),commandBlock);
+//            }
+            cout<<name<<endl;
             cout<<this->extractParameters(name)<<endl;
-            func.painFor(this->fileLines,this->extractParameters(name),commandBlock);
+            //func.painInsert(this->fileLines,this->data[],commandBlock);
             cout<<"commandBlock:"<<name<<" range:"<<commandBlock.start<<" / "
             <<commandBlock.end<<" content-range:"<<commandBlock.contentStart<<" / "<<commandBlock.contentEnd<<endl;
             commandStack.pop();
@@ -88,8 +95,9 @@ private:
     }
 public:
 
-    Pain(string path){
+    Pain(string path, map <string,string> data){
         this->file.open(path);
+        this->data=data;
     }
     void run(){
         this->runFileAnalysis();
