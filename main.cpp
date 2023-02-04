@@ -14,4 +14,8 @@ int main() {
    return server.runServer();
 
    delete router;
+//    map <string,string> data;
+//    data["test2"]="test";
+//    Pain pain("test.pain.html",data);
+//    pain.run();
 }

@@ -8,6 +8,7 @@
 #include <fstream>
 #pragma once
 using namespace std;
+using namespace std::placeholders;
 struct responseContainer{
     char* content;
     int size;
@@ -17,7 +18,7 @@ private:
     static string readFile(string path);
 public:
 
-    static string view(string path,string code);
+    static responseContainer* view(string path,string code, map <string,string> _data);
     static responseContainer* staticHtml(string path,string code="200");
     static string json();
 };

@@ -3,29 +3,28 @@
 //
 #pragma once
 #include "Router.h"
+#include "Server.h"
 
-void Router::Get(std::string route, function<responseContainer*()> callback) {
-    this->GetRoute.insert({route, bind(callback)});
+using namespace std::placeholders;
+void Router::Get(string route, function<responseContainer*(request*)> callback) {
+    this->Route[route].insert({"GET",bind(callback, _1)});
 }
-responseContainer* Router::findRoute(string route) {
-    auto  result=this->GetRoute.find(route);
-
-    return result->second();
+void Router::Post(string route, function<responseContainer*(request*)> callback) {
+    this->Route[route].insert({"POST",bind(callback, _1)});
 }
-string Router::executeRoute(string route) {
-//    auto  result=this->GetRoute.find(route);
-//    string line="",file="";
-//    fstream fstream1;
-//    fstream1.open("../resources/html/"+result->second);
-//    while( getline(fstream1,line)){
-//        file+=(line+"\n");
-//    }
-//    fstream1.close();
-//    cout<<file<<endl;
-//    return file;
+responseContainer* Router::findRoute(request* Request) {
+    auto  result=this->Route.find( Request->route);
+    if(result != this->Route.end()){
+        auto  result=this->Route[Request->route].find(Request->methode);
+        if(result != this->Route[Request->route].end()){
+            return result->second(Request);
+        }
+        return abort(415);
+    }
+    return abort(404);
 }
 Router::~Router() {
-    this->GetRoute.clear();
+    this->Route.clear();
 }
 Router *router = new Router();
 

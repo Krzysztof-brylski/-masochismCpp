@@ -3,15 +3,21 @@
 //
 #pragma once
 #include "../../../engine/Server/Response.h"
+#include "../../../engine/Server/Server.h"
+
+
 class TestController{
 public:
-    static responseContainer* index(){
+    static responseContainer* index(struct request* Request){
+        if(Request->Get["test"]=="test"){
+            return  Response::staticHtml("test.html","200");
+        }
         return  Response::staticHtml("index.html","200");
     }
-    static responseContainer* about(){
+    static responseContainer* about(struct request* Request){
         return Response::staticHtml("aboutUs.html","200");
     }
-    static responseContainer* test(){
-        return Response::staticHtml("test.html","200");
+    static responseContainer* test(struct request* Request){
+        return Response::view("test.pain.html","200",Request->Get);
     }
 };

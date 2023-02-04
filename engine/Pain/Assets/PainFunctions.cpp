@@ -1,6 +1,7 @@
 #include "dataStructures.h"
 #include <string.h>
 #include <vector>
+#include <map>
 #include <iostream>
 using namespace std;
 class PainFunctions{
@@ -20,6 +21,9 @@ public:
       }
       void painIf(vector <string> &fileLines,int n, commandBlock &commandBlock){
 
+      }
+      void painInsert(vector <string> &fileLines, insertBlock &insertBlock, map <string,string> data){
+          fileLines[insertBlock.lineNo]=data[insertBlock.keyName];
       }
 
 };

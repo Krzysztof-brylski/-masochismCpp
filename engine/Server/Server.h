@@ -10,14 +10,10 @@
 #include <thread>
 #include "Router.cpp"
 #include "Response.cpp"
+#include "serverDataStructures.h"
 #pragma once
 #include "../../web/routers.cpp"
-struct request{
-    string  methode="";
-    string route="";
-    string protocol="";
-    string host="";
-};
+
 using namespace std;
 namespace MasochismServer{
     class Server {
@@ -31,6 +27,7 @@ namespace MasochismServer{
         request* request = new struct request;
         Router* router;
         int processRequest();
+        map<string,string> decodeUrl(string url);
         //int sendResponse();
     public:
         Server(char* serverIp,int serverPort,  Router* router);
