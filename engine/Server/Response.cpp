@@ -39,12 +39,12 @@ responseContainer* Response::staticHtml(string path, string code) {
     return responseContainer;
 }
 
-responseContainer* Response::view(string path, string code,  map <string,string> _data) {
+responseContainer* Response::view(string path, string code,  map <string,string> data) {
 
     responseContainer* responseContainer = new struct responseContainer;
-
-
-    string html = Response::readFile(path);
+    Pain pain(path,data);
+    pain.run();
+    string html =pain.implode();
     cout<<html.length()<<endl;
     int size=html.length()+85;
     char* http_header= new char[size];

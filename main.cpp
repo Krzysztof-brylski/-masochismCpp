@@ -13,9 +13,9 @@ int main() {
    MasochismServer::Server server((char*)"127.0.0.1",7777, router);
    return server.runServer();
 
-//   delete router;
+   delete router;
 //    map <string,string> data;
-//    data["test"]="test";
+//    data["test2"]="test";
 //    Pain pain("test.pain.html",data);
 //    pain.run();
 }

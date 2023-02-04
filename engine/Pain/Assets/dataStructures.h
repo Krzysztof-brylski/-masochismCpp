@@ -6,6 +6,12 @@ struct commandRange{
     int end;
     int lineNo;
 };
+struct insertBlock{
+    int lineNo=0;
+    int start=0;
+    int end=0;
+    std::string keyName;
+};
 struct commandBlock{
     int start=0;
     int end=0;
